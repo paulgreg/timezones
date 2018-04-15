@@ -1,6 +1,6 @@
 # timezones
 
-A simple React project to display times in different timezones.
+A simple React project to display times in different time zones.
 
 ## Resources
 
