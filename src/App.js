@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Time from './Time'
+
+import timezones from 'timezones.json'
+console.log(timezones)
+const RST = timezones[39]
 
 class App extends Component {
   render() {
@@ -10,8 +15,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">TimeZones</h1>
         </header>
-        <p className="App-intro">
-        </p>
+        <div className="App-time"><Time label="Europe/Paris" timezone={RST} /></div>
       </div>
     );
   }
