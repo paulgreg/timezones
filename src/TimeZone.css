@@ -1,0 +1,7 @@
+.timezone { border-top: 1px solid lightgrey; margin-top: 5em; padding: 1em; }
+
+.timezone select,
+.timezone button { font-size: 18px; background-color: aliceBlue; color: darkblue; border: 1px solid darkblue; border-radius: 5px; }
+
+.timezone select { }
+.timezone button { margin-left: .5em; }
