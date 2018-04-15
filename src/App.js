@@ -47,6 +47,7 @@ class App extends Component {
         <div className="App-timezone">
           <TimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._timezone = r }} />
         </div>
+        <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
       </div>
     );
   }
