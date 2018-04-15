@@ -1,4 +1,4 @@
-.time { font-size: 30px; }
+.time { font-size: 30px; margin: .8em }
 
 .time-time,
 .time-label { font-weight: bold; }

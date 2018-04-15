@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import './Time.css';
 
-let interval
+function pad(nb) {
+    return nb < 10 ? '0' + nb : '' + nb
+}
 
 function build(offset) {
   const options = { weekday: 'short', day: 'numeric' };
   const date = new Date()
   return {
-      hours: date.getUTCHours() + offset,
-      minutes: date.getMinutes(),
-      seconds: date.getSeconds(),
+      hours: pad(date.getUTCHours() + offset),
+      minutes: pad(date.getMinutes()),
+      seconds: pad(date.getSeconds()),
       day: date.toLocaleDateString('fr-FR', options)
   }
 }
@@ -30,14 +32,14 @@ export default class Time extends Component {
   }
 
  pause() {
-    if (interval) {
-      clearInterval(interval)
+    if (this.interval) {
+      clearInterval(this.interval)
     }
   }
 
   play() {
-    if (!interval) {
-      interval = setInterval(this.update.bind(this), 1000)
+    if (!this.interval) {
+      this.interval = setInterval(this.update.bind(this), 1000)
     }
   }
 
