@@ -12,7 +12,9 @@ function build(props) {
   const timezone = tzh.get(props.label)
   const options = { weekday: 'short', day: 'numeric' };
   const date = new Date()
-  date.setHours(date.getUTCHours() + timezone.offset)
+  const minuteOffset = timezone.offset * 60
+  date.setHours(date.getUTCHours() + (minuteOffset / 60))
+  date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
   return {
       timezone: timezone,
       hours: pad(date.getHours()),
