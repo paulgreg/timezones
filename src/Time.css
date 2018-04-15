@@ -1,18 +1,15 @@
-.time { font-size: 30px; margin: .8em }
+.time { font-size: 30px; margin: .8em; display: flex; border-bottom: 1px dashed royalBlue; }
 
 .time-time,
 .time-label { font-weight: bold; }
 
-.time-label { color: #333; font-style: italic; }
-
 .time-time,
 .time-date { margin-left: .5em;}
 
-.time-date { font-size: 24px; color: #666; }
+.time-label { color: royalBlue; font-style: italic; flex: 2; }
+.time-time { color: midnightBlue; flex: 1; }
+.time-date { color: royalBlue; font-size: 24px; flex: 1; }
 
 @media (max-width: 500px) {
-    .time-label,
-    .time-time,
-    .time-date { display: inline-block; }
-
+    .time { flex-direction: column; }
 }
