@@ -8,8 +8,9 @@ function pad(nb) {
 function build(offset) {
   const options = { weekday: 'short', day: 'numeric' };
   const date = new Date()
+  date.setHours(date.getUTCHours() + offset)
   return {
-      hours: pad(date.getUTCHours() + offset),
+      hours: pad(date.getHours()),
       minutes: pad(date.getMinutes()),
       seconds: pad(date.getSeconds()),
       day: date.toLocaleDateString('fr-FR', options)
