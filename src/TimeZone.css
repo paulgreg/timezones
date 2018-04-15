@@ -3,5 +3,5 @@
 .timezone select,
 .timezone button { font-size: 18px; background-color: aliceBlue; color: darkblue; border: 1px solid darkblue; border-radius: 5px; }
 
-.timezone select { }
+.timezone select { max-width: 250px; }
 .timezone button { margin-left: .5em; }
