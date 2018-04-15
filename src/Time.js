@@ -32,7 +32,7 @@ export default class Time extends Component {
     this.pause()
   }
 
- pause() {
+  pause() {
     if (this.interval) {
       clearInterval(this.interval)
     }
