@@ -7,10 +7,7 @@ function flatten(arr) {
 }
 
 function sortTimezone (a, b) {
-  if (a.offset === b.offset) {
-    return a.label < b.label
-  }
-  return a.offset - b.offset
+  return a.label <  b.label ? -1 : (a.label > b.label) ? 1 : 0
 }
 
 function getLabelIdx (array, label) {
