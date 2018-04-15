@@ -14,7 +14,7 @@ function build(props) {
   const date = new Date()
   date.setHours(date.getUTCHours() + timezone.offset)
   return {
-      label: timezone.label,
+      timezone: timezone,
       hours: pad(date.getHours()),
       minutes: pad(date.getMinutes()),
       seconds: pad(date.getSeconds()),
@@ -53,12 +53,17 @@ export default class Time extends Component {
     this.setState(build(this.props))
   }
 
+  remove() {
+    this.props.removeFn(this.state.timezone.label)
+  }
+
   render() {
     return (
       <div className="time">
-        <span className="time-label">{this.state.label}</span>
+        <span className="time-label">{this.state.timezone.label} {tzh.formatOffset(this.state.timezone.offset)}</span>
         <span className="time-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
         <span className="time-date">({this.state.day})</span>
+        <a className="time-remove" onClick={this.remove.bind(this)}></a>
       </div>
     );
   }

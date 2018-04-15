@@ -37,7 +37,7 @@ export default class TimeZone extends Component {
           value={this.state.selectValue}
           onChange={this.handleChange.bind(this)}>
           {this.state.timezones.map(tz =>
-            <option key={tz.label} value={tz.label}>{tz.label} ({tz.offset}h)</option>
+            <option key={tz.label} value={tz.label}>{tz.label} {tzh.formatOffset(tz.offset)}</option>
           )}
         </select>
         <button onClick={this.addTimezone.bind(this)}>Add</button>

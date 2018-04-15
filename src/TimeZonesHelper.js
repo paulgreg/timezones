@@ -49,5 +49,10 @@ export default class {
     return getCache[zoneToLookup]
   }
 
+  formatOffset(nb) {
+    return `(${nb >= 0 ? '+' : ''}${nb}h)`
+
+  }
+
 }
 

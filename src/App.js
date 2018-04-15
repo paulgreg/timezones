@@ -12,13 +12,22 @@ class App extends Component {
     this.state = { labels: rawLabels.split(',')}
   }
 
-  addTimeZone(label) {
-    const labels = this.state.labels.concat(label)
+  update (labels) {
     localStorage.labels = labels.join(',')
     this.setState({
       labels
     })
     this._timezone.exclude(labels)
+  }
+
+  addTimeZone(label) {
+    const labels = this.state.labels.concat(label)
+    this.update(labels)
+  }
+
+  removeTimeZone(labelToRemove) {
+    const labels = this.state.labels.filter(l => l !== labelToRemove)
+    this.update(labels)
   }
 
   render() {
@@ -30,7 +39,9 @@ class App extends Component {
         </header>
         {
           this.state.labels.map((label) =>
-            <div className="App-time" key={label}><Time label={label} /></div>
+            <div className="App-time" key={label}>
+              <Time label={label} removeFn={this.removeTimeZone.bind(this) }/>
+            </div>
           )
         }
         <div className="App-timezone">

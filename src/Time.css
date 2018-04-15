@@ -6,10 +6,11 @@
 .time-time,
 .time-date { margin-left: .5em;}
 
-.time-label { color: royalBlue; font-style: italic; flex: 2; }
-.time-time { color: midnightBlue; flex: 1; }
-.time-date { color: royalBlue; font-size: 24px; flex: 1; }
+.time-label { color: royalBlue; font-style: italic; flex: 10; }
+.time-time { color: midnightBlue; flex: 3;  min-width: 130px;}
+.time-date { color: royalBlue; font-size: 24px; flex: 2; min-width: 100px; }
+.time-remove { content: ' '; background: url('bin.png') center 4px no-repeat; background-size: 20px; padding: 14px; flex: 1; margin-bottom: 10px; }
 
 @media (max-width: 530px) {
-    .time { flex-direction: column; }
+  .time { flex-direction: column; }
 }
