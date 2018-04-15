@@ -63,7 +63,7 @@ export default class Time extends Component {
         <span className="time-label">{this.state.timezone.label} {tzh.formatOffset(this.state.timezone.offset)}</span>
         <span className="time-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
         <span className="time-date">({this.state.day})</span>
-        <a className="time-remove" onClick={this.remove.bind(this)}></a>
+        <span className="time-remove" onClick={this.remove.bind(this)}></span>
       </div>
     );
   }
