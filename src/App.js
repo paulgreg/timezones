@@ -18,7 +18,7 @@ class App extends Component {
     this.setState({
       labels
     })
-    // TODO: refresh the Timezone component to exclude new label
+    this._timezone.exclude(labels)
   }
 
   render() {
@@ -33,7 +33,9 @@ class App extends Component {
             <div className="App-time" key={label}><Time label={label} /></div>
           )
         }
-        <div className="App-timezone"><TimeZone addFn={this.addTimeZone.bind(this)} exclude={this.state.labels} /></div>
+        <div className="App-timezone">
+          <TimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._timezone = r }} />
+        </div>
       </div>
     );
   }

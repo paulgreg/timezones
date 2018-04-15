@@ -9,11 +9,17 @@ export default class TimeZone extends Component {
   constructor(props) {
     super(props)
 
-    const allTzs = tzh.getAll().filter(tz => {
-      return props.exclude.indexOf(tz.label) === -1
-    })
+    const tzs = this.filterTimezones(tzh.getAll(), props.excludedLabels)
+    this.state = { timezones: tzs, selectValue: tzs[0].label }
+  }
 
-    this.state = { timezones: allTzs, selectValue: allTzs[0].label }
+  filterTimezones (timezones, excludedLabels) {
+    return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
+  }
+
+  exclude (excludedLabels) {
+    const tzs = this.filterTimezones(this.state.timezones, excludedLabels)
+    this.setState({ timezones: tzs, selectValue: tzs[0].label })
   }
 
   addTimezone() {
