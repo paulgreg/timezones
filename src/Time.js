@@ -18,7 +18,7 @@ function build(props) {
       hours: pad(date.getHours()),
       minutes: pad(date.getMinutes()),
       seconds: pad(date.getSeconds()),
-      day: date.toLocaleDateString('fr-FR', options)
+      day: date.toLocaleDateString(window.navigator.language, options)
   }
 }
 
