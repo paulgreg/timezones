@@ -51,7 +51,7 @@ export default class Time extends Component {
   render() {
     return (
       <div className="time">
-        <span className="time-label">{this.props.label}</span>
+        <span className="time-label">{this.props.timezone.label}</span>
         <span className="time-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
         <span className="time-date">({this.state.day})</span>
       </div>
