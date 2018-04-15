@@ -6,8 +6,19 @@ import TimeZone from './TimeZone'
 
 class App extends Component {
 
-  addTimeZone (label) {
-    console.log(label)
+  constructor(props) {
+    super(props)
+    var rawLabels = (window.localStorage && window.localStorage.labels) || 'Europe/Paris,Pacific/Noumea'
+    this.state = { labels: rawLabels.split(',')}
+  }
+
+  addTimeZone(label) {
+    const labels = this.state.labels.concat(label)
+    localStorage.labels = labels.join(',')
+    this.setState({
+      labels
+    })
+    // TODO: refresh the Timezone component to exclude new label
   }
 
   render() {
@@ -17,9 +28,12 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">TimeZones</h1>
         </header>
-        <div className="App-time"><Time label="Europe/Paris" /></div>
-        <div className="App-time"><Time label="Pacific/Noumea" /></div>
-        <div className="App-timezone"><TimeZone addFn={this.addTimeZone} /></div>
+        {
+          this.state.labels.map((label) =>
+            <div className="App-time" key={label}><Time label={label} /></div>
+          )
+        }
+        <div className="App-timezone"><TimeZone addFn={this.addTimeZone.bind(this)} exclude={this.state.labels} /></div>
       </div>
     );
   }

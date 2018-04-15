@@ -8,7 +8,11 @@ export default class TimeZone extends Component {
 
   constructor(props) {
     super(props)
-    const allTzs = tzh.getAll()
+
+    const allTzs = tzh.getAll().filter(tz => {
+      return props.exclude.indexOf(tz.label) === -1
+    })
+
     this.state = { timezones: allTzs, selectValue: allTzs[0].label }
   }
 
