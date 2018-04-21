@@ -52,7 +52,7 @@ export default class Time extends Component {
 
     return (
       <div className="timezone">
-        <span className="timezone-label">{timezone.label} {tzh.formatOffset(timezone.offset)}</span>
+        <span className="timezone-label">{tzh.getCity(timezone.label)} <small>{tzh.getContinent(timezone.label)}</small> <small>{tzh.formatOffset(timezone.offset)}</small></span>
         <span className={dayOrNightClass}></span>
         <span className="timezone-time">{hours}:{minutes}:{seconds}</span>
         <span className="timezone-date">({day})</span>

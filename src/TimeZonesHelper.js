@@ -18,21 +18,25 @@ function uniqueTimezone (tz, idx, array) {
   return getLabelIdx(array, tz.label) === idx;
 }
 
-function filterEtcTz (tz) {
-  return !tz.label.startsWith('Etc')
+function filterTzWithCity(tz) {
+  return !tz.label.startsWith('Etc') && tz.label.indexOf('/') !== -1
 }
 
 const getCache = {}
+let getAllCache = []
 
 export default class {
 
   getAll() {
-    const allTzs = flatten(timezones.map(tz => {
-      return tz.utc.map(label => {
-        return { label, offset: tz.offset }
-      })
-    }))
-    return allTzs.filter(filterEtcTz).filter(uniqueTimezone).sort(sortTimezone)
+    if (!getAllCache.length) {
+      const allTzs = flatten(timezones.map(tz => {
+        return tz.utc.map(label => {
+          return { label, offset: tz.offset }
+        })
+      }))
+      getAllCache = allTzs.filter(filterTzWithCity).filter(uniqueTimezone).sort(sortTimezone)
+    }
+    return getAllCache
   }
 
   get(zoneToLookup) {
@@ -48,7 +52,28 @@ export default class {
 
   formatOffset(nb) {
     return `(${nb >= 0 ? '+' : ''}${nb}h)`
+  }
 
+  filterTimezones (timezones, excludedLabels) {
+    return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
+  }
+
+  getContinent (label) {
+    return label.split('/')[0]
+  }
+
+  getCity(label) {
+    const s = label.split('/')
+    return s[s.length-1].replace('_', ' ')
+  }
+
+  groupTimezones (timezones) {
+    return timezones.reduce((acc, value) => {
+      const continent = this.getContinent(value.label)
+      if (!acc[continent]) acc[continent] = []
+      acc[continent].push(value)
+      return acc
+    }, {})
   }
 
 }

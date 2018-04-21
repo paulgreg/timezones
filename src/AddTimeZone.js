@@ -8,17 +8,13 @@ export default class AddTimeZone extends Component {
 
   constructor(props) {
     super(props)
-
-    const tzs = this.filterTimezones(tzh.getAll(), props.excludedLabels)
-    this.state = { timezones: tzs, selectValue: tzs[0].label }
-  }
-
-  filterTimezones (timezones, excludedLabels) {
-    return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
+    const tzs = tzh.filterTimezones(tzh.getAll(), props.excludedLabels)
+    const timezoneGroups = tzh.groupTimezones(tzs)
+    this.state = { timezones: tzs, timezoneGroups, selectValue: tzs[0].label }
   }
 
   exclude (excludedLabels) {
-    const tzs = this.filterTimezones(tzh.getAll(), excludedLabels)
+    const tzs = tzh.filterTimezones(tzh.getAll(), excludedLabels)
     this.setState({ timezones: tzs, selectValue: tzs[0].label })
   }
 
@@ -31,13 +27,18 @@ export default class AddTimeZone extends Component {
   }
 
   render() {
+
     return (
       <div className="add-timezone">
         <select
           value={this.state.selectValue}
           onChange={this.handleChange.bind(this)}>
-          {this.state.timezones.map(tz =>
-            <option key={tz.label} value={tz.label}>{tz.label} {tzh.formatOffset(tz.offset)}</option>
+          {Object.keys(this.state.timezoneGroups).map(group =>
+            <optgroup key={group} label={group}>
+            {this.state.timezoneGroups[group].map(tz =>
+              <option key={tz.label} value={tz.label}>{tzh.getCity(tz.label)} {tzh.formatOffset(tz.offset)}</option>
+            )}
+            </optgroup>
           )}
         </select>
         <button onClick={this.addTimezone.bind(this)}>Add</button>
