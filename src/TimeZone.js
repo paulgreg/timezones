@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './TimeZone.css';
+import { registerTick, unregisterTick } from './Tick'
 
 import TimeZonesHelper from './TimeZonesHelper'
 const tzh = new TimeZonesHelper()
@@ -8,63 +9,47 @@ function pad(nb) {
     return nb < 10 ? '0' + nb : '' + nb
 }
 
-function build(props) {
-  const timezone = tzh.get(props.label)
-  const options = { weekday: 'short', day: 'numeric' };
-  const date = new Date()
-  const minuteOffset = timezone.offset * 60
-  date.setHours(date.getUTCHours() + (minuteOffset / 60))
-  date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
-  return {
-      timezone: timezone,
-      hours: pad(date.getHours()),
-      minutes: pad(date.getMinutes()),
-      seconds: pad(date.getSeconds()),
-      day: date.toLocaleDateString(window.navigator.language, options)
-  }
-}
-
 export default class Time extends Component {
 
   constructor(props) {
     super(props)
-    this.state = build(this.props)
+    this.state = { date: new Date() }
   }
 
   componentDidMount() {
-    this.play()
+    registerTick(this.props.label, this.update.bind(this))
   }
 
   componentWillUnmount() {
-    this.pause()
+    unregisterTick(this.props.label)
   }
 
-  pause() {
-    if (this.interval) {
-      clearInterval(this.interval)
-    }
-  }
-
-  play() {
-    if (!this.interval) {
-      this.interval = setInterval(this.update.bind(this), 1000)
-    }
-  }
-
-  update() {
-    this.setState(build(this.props))
+  update(date) {
+    this.setState({ date })
   }
 
   remove() {
-    this.props.removeFn(this.state.timezone.label)
+    this.props.removeFn(this.props.label)
   }
 
   render() {
+    const timezone = tzh.get(this.props.label)
+    const options = { weekday: 'short', day: 'numeric' };
+    const date = this.state.date
+    const minuteOffset = timezone.offset * 60
+    date.setHours(date.getUTCHours() + (minuteOffset / 60))
+    date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
+
+    const hours = pad(date.getHours())
+    const minutes = pad(date.getMinutes())
+    const seconds = pad(date.getSeconds())
+    const day = date.toLocaleDateString(window.navigator.language, options)
+
     return (
       <div className="timezone">
-        <span className="timezone-label">{this.state.timezone.label} {tzh.formatOffset(this.state.timezone.offset)}</span>
-        <span className="timezone-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
-        <span className="timezone-date">({this.state.day})</span>
+        <span className="timezone-label">{timezone.label} {tzh.formatOffset(timezone.offset)}</span>
+        <span className="timezone-time">{hours}:{minutes}:{seconds}</span>
+        <span className="timezone-date">({day})</span>
         <span className="timezone-remove" onClick={this.remove.bind(this)}></span>
       </div>
     );
