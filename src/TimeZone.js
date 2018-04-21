@@ -9,6 +9,10 @@ function pad(nb) {
     return nb < 10 ? '0' + nb : '' + nb
 }
 
+function getDayOrNightClass(date) {
+  return date.getHours() >= 7 && date.getHours() <= 19 ? 'day' : 'night'
+}
+
 export default class Time extends Component {
 
   constructor(props) {
@@ -44,10 +48,12 @@ export default class Time extends Component {
     const minutes = pad(date.getMinutes())
     const seconds = pad(date.getSeconds())
     const day = date.toLocaleDateString(window.navigator.language, options)
+    const dayOrNightClass = `timezone-${getDayOrNightClass(date)}`
 
     return (
       <div className="timezone">
         <span className="timezone-label">{timezone.label} {tzh.formatOffset(timezone.offset)}</span>
+        <span className={dayOrNightClass}></span>
         <span className="timezone-time">{hours}:{minutes}:{seconds}</span>
         <span className="timezone-date">({day})</span>
         <span className="timezone-remove" onClick={this.remove.bind(this)}></span>

@@ -1,16 +1,30 @@
-.timezone { font-size: 30px; margin: .8em; display: flex; border-bottom: 1px dashed royalBlue; }
+.timezone        { font-size: 30px; margin: .8em; display: flex; border-bottom: 1px dashed royalBlue; }
 
 .timezone-time,
-.timezone-label { font-weight: bold; }
+.timezone-label  { font-weight: bold; }
 
 .timezone-time,
-.timezone-date { margin-left: .5em;}
+.timezone-date   { margin-left: .5em;}
 
-.timezone-label { color: royalBlue; font-style: italic; flex: 10; }
-.timezone-time { color: midnightBlue; flex: 3;  min-width: 130px;}
-.timezone-date { color: royalBlue; font-size: 24px; flex: 2; min-width: 100px; }
+.timezone-label  { color: royalBlue; font-style: italic; flex: 10; }
+.timezone-time   { color: midnightBlue; flex: 3;  min-width: 130px;}
+.timezone-date   { color: royalBlue; font-size: 24px; flex: 2; min-width: 100px; }
 .timezone-remove { cursor: pointer; content: ' '; background: url('bin.png') center 4px no-repeat; background-size: 20px; padding: 14px; flex: 1; margin-bottom: 10px; }
 
-@media (max-width: 530px) {
-  .timezone { flex-direction: column; }
+.timezone-day,
+.timezone-night  { display: inline-block; width: 25px; height: 25px; background-size: 25px; text-align: center; }
+.timezone-day    { background-image: url('./sunny.png'); }
+.timezone-night  { background-image: url('./sleep.png'); }
+
+
+@media (max-width: 600px) {
+  .timezone { display: block; font-size: 26px; }
+  .timezone-label { display: block;  }
+  .timezone-remove { float: right; }
+}
+@media (max-width: 400px) {
+  .timezone { font-size: 24px; }
+}
+@media (max-width: 300px) {
+  .timezone { font-size: 18px; }
 }
