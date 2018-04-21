@@ -14,10 +14,8 @@ class App extends Component {
 
   update (labels) {
     localStorage.labels = labels.join(',')
-    this.setState({
-      labels
-    })
-    this._timezone.exclude(labels)
+    this.setState({ labels })
+    this._addtimezone.exclude(labels)
   }
 
   addTimeZone(label) {
@@ -45,7 +43,7 @@ class App extends Component {
           )
         }
         <div className="App-timezone">
-          <AddTimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._timezone = r }} />
+          <AddTimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._addtimezone = r }} />
         </div>
         <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
       </div>
