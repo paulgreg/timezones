@@ -8,7 +8,7 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    var rawLabels = (window.localStorage && window.localStorage.labels) || 'Europe/Paris,Pacific/Noumea'
+    var rawLabels = (window.localStorage && window.localStorage.labels) || 'Europe/Paris,America/New_York'
     this.state = { labels: rawLabels.split(',')}
   }
 
