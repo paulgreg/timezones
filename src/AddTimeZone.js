@@ -18,7 +18,7 @@ export default class AddTimeZone extends Component {
   }
 
   exclude (excludedLabels) {
-    const tzs = this.filterTimezones(this.state.timezones, excludedLabels)
+    const tzs = this.filterTimezones(tzh.getAll(), excludedLabels)
     this.setState({ timezones: tzs, selectValue: tzs[0].label })
   }
 
