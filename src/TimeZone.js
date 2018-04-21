@@ -17,7 +17,7 @@ export default class Time extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { date: new Date() }
+    this.state = { timestamp: +new Date() }
   }
 
   componentDidMount() {
@@ -28,8 +28,8 @@ export default class Time extends Component {
     unregisterTick(this.props.label)
   }
 
-  update(date) {
-    this.setState({ date })
+  update(timestamp) {
+    this.setState({ timestamp })
   }
 
   remove() {
@@ -39,7 +39,7 @@ export default class Time extends Component {
   render() {
     const timezone = tzh.get(this.props.label)
     const options = { weekday: 'short', day: 'numeric' };
-    const date = this.state.date
+    const date = new Date(this.state.timestamp)
     const minuteOffset = timezone.offset * 60
     date.setHours(date.getUTCHours() + (minuteOffset / 60))
     date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
@@ -58,7 +58,7 @@ export default class Time extends Component {
         <span className="timezone-date">({day})</span>
         <span className="timezone-remove" onClick={this.remove.bind(this)}></span>
       </div>
-    );
+    )
   }
 }
 

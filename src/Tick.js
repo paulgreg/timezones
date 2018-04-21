@@ -20,8 +20,9 @@ function stop() {
 }
 
 function tick () {
+  const timestamp = +new Date()
   for (var key in subscribers) {
-    subscribers[key](new Date())
+    subscribers[key](timestamp)
   }
 }
 
