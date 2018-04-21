@@ -1,46 +1,71 @@
 import React, { Component } from 'react';
 import './TimeZone.css';
-import TimeZonesHelper from './TimeZonesHelper'
 
+import TimeZonesHelper from './TimeZonesHelper'
 const tzh = new TimeZonesHelper()
 
-export default class TimeZone extends Component {
+function pad(nb) {
+    return nb < 10 ? '0' + nb : '' + nb
+}
+
+function build(props) {
+  const timezone = tzh.get(props.label)
+  const options = { weekday: 'short', day: 'numeric' };
+  const date = new Date()
+  const minuteOffset = timezone.offset * 60
+  date.setHours(date.getUTCHours() + (minuteOffset / 60))
+  date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
+  return {
+      timezone: timezone,
+      hours: pad(date.getHours()),
+      minutes: pad(date.getMinutes()),
+      seconds: pad(date.getSeconds()),
+      day: date.toLocaleDateString(window.navigator.language, options)
+  }
+}
+
+export default class Time extends Component {
 
   constructor(props) {
     super(props)
-
-    const tzs = this.filterTimezones(tzh.getAll(), props.excludedLabels)
-    this.state = { timezones: tzs, selectValue: tzs[0].label }
+    this.state = build(this.props)
   }
 
-  filterTimezones (timezones, excludedLabels) {
-    return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
+  componentDidMount() {
+    this.play()
   }
 
-  exclude (excludedLabels) {
-    const tzs = this.filterTimezones(this.state.timezones, excludedLabels)
-    this.setState({ timezones: tzs, selectValue: tzs[0].label })
+  componentWillUnmount() {
+    this.pause()
   }
 
-  addTimezone() {
-    this.props.addFn(this.state.selectValue)
+  pause() {
+    if (this.interval) {
+      clearInterval(this.interval)
+    }
   }
 
-  handleChange(e) {
-    this.setState({selectValue: e.target.value});
+  play() {
+    if (!this.interval) {
+      this.interval = setInterval(this.update.bind(this), 1000)
+    }
+  }
+
+  update() {
+    this.setState(build(this.props))
+  }
+
+  remove() {
+    this.props.removeFn(this.state.timezone.label)
   }
 
   render() {
     return (
       <div className="timezone">
-        <select
-          value={this.state.selectValue}
-          onChange={this.handleChange.bind(this)}>
-          {this.state.timezones.map(tz =>
-            <option key={tz.label} value={tz.label}>{tz.label} {tzh.formatOffset(tz.offset)}</option>
-          )}
-        </select>
-        <button onClick={this.addTimezone.bind(this)}>Add</button>
+        <span className="timezone-label">{this.state.timezone.label} {tzh.formatOffset(this.state.timezone.offset)}</span>
+        <span className="timezone-time">{this.state.hours}:{this.state.minutes}:{this.state.seconds}</span>
+        <span className="timezone-date">({this.state.day})</span>
+        <span className="timezone-remove" onClick={this.remove.bind(this)}></span>
       </div>
     );
   }

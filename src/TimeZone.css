@@ -1,7 +1,16 @@
-.timezone { border-top: 1px solid lightgrey; margin-top: 5em; padding: 1em; }
+.timezone { font-size: 30px; margin: .8em; display: flex; border-bottom: 1px dashed royalBlue; }
 
-.timezone select,
-.timezone button { font-size: 18px; background-color: aliceBlue; color: darkblue; border: 1px solid darkblue; border-radius: 5px; }
+.timezone-time,
+.timezone-label { font-weight: bold; }
 
-.timezone select { max-width: 250px; }
-.timezone button { margin-left: .5em; }
+.timezone-time,
+.timezone-date { margin-left: .5em;}
+
+.timezone-label { color: royalBlue; font-style: italic; flex: 10; }
+.timezone-time { color: midnightBlue; flex: 3;  min-width: 130px;}
+.timezone-date { color: royalBlue; font-size: 24px; flex: 2; min-width: 100px; }
+.timezone-remove { cursor: pointer; content: ' '; background: url('bin.png') center 4px no-repeat; background-size: 20px; padding: 14px; flex: 1; margin-bottom: 10px; }
+
+@media (max-width: 530px) {
+  .timezone { flex-direction: column; }
+}

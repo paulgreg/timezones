@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Time from './Time'
 import TimeZone from './TimeZone'
+import AddTimeZone from './AddTimeZone'
 
 class App extends Component {
 
@@ -40,12 +40,12 @@ class App extends Component {
         {
           this.state.labels.map((label) =>
             <div className="App-time" key={label}>
-              <Time label={label} removeFn={this.removeTimeZone.bind(this) }/>
+              <TimeZone label={label} removeFn={this.removeTimeZone.bind(this) }/>
             </div>
           )
         }
         <div className="App-timezone">
-          <TimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._timezone = r }} />
+          <AddTimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._timezone = r }} />
         </div>
         <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
       </div>
