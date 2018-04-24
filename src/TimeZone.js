@@ -46,7 +46,6 @@ export default class Time extends Component {
 
     const hours = pad(date.getHours())
     const minutes = pad(date.getMinutes())
-    const seconds = pad(date.getSeconds())
     const day = date.toLocaleDateString(window.navigator.language, options)
     const dayOrNightClass = `timezone-${getDayOrNightClass(date)}`
 
@@ -54,7 +53,7 @@ export default class Time extends Component {
       <div className="timezone">
         <span className="timezone-label">{tzh.getCity(timezone.label)} <small>{tzh.getContinent(timezone.label)}</small> <small>{tzh.formatOffset(timezone.offset)}</small></span>
         <span className={dayOrNightClass}></span>
-        <span className="timezone-time">{hours}:{minutes}:{seconds}</span>
+        <span className="timezone-time">{hours}:{minutes}</span>
         <span className="timezone-date">({day})</span>
         <span className="timezone-remove" onClick={this.remove.bind(this)}></span>
       </div>

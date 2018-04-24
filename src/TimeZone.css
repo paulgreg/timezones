@@ -7,7 +7,7 @@
 .timezone-date   { margin-left: .5em;}
 
 .timezone-label  { color: royalBlue; font-style: italic; flex: 10; }
-.timezone-time   { color: midnightBlue; flex: 3;  min-width: 130px;}
+.timezone-time   { color: midnightBlue; flex: 3;  min-width: 60px;}
 .timezone-date   { color: royalBlue; font-size: 24px; flex: 2; min-width: 100px; }
 .timezone-remove { cursor: pointer; content: ' '; background: url('bin.png') center 4px no-repeat; background-size: 20px; padding: 14px; flex: 1; margin-bottom: 10px; }
 
