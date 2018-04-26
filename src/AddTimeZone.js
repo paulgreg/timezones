@@ -4,18 +4,21 @@ import TimeZonesHelper from './TimeZonesHelper'
 
 const tzh = new TimeZonesHelper()
 
+function buildState(excludedLabels) {
+  const tzs = tzh.filterTimezones(tzh.getAll(), excludedLabels)
+  const timezoneGroups = tzh.groupTimezones(tzs)
+  return { timezoneGroups, selectValue: tzs[0].label }
+}
+
 export default class AddTimeZone extends Component {
 
   constructor(props) {
     super(props)
-    const tzs = tzh.filterTimezones(tzh.getAll(), props.excludedLabels)
-    const timezoneGroups = tzh.groupTimezones(tzs)
-    this.state = { timezones: tzs, timezoneGroups, selectValue: tzs[0].label }
+    this.state = buildState(props.excludedLabels)
   }
 
   exclude (excludedLabels) {
-    const tzs = tzh.filterTimezones(tzh.getAll(), excludedLabels)
-    this.setState({ timezones: tzs, selectValue: tzs[0].label })
+    this.setState(buildState(excludedLabels))
   }
 
   addTimezone() {
@@ -27,7 +30,7 @@ export default class AddTimeZone extends Component {
   }
 
   render() {
-
+console.log('render', this.state)
     return (
       <div className="add-timezone">
         <select
