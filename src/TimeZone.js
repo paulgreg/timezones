@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './TimeZone.css';
 import { registerTick, unregisterTick } from './Tick'
+import { DateTime } from 'luxon'
 
 import TimeZonesHelper from './TimeZonesHelper'
 const tzh = new TimeZonesHelper()
@@ -10,7 +11,7 @@ function pad(nb) {
 }
 
 function getDayOrNightClass(date) {
-  return date.getHours() >= 7 && date.getHours() <= 19 ? 'day' : 'night'
+  return date.hour >= 7 && date.hour <= 19 ? 'day' : 'night'
 }
 
 export default class Time extends Component {
@@ -38,15 +39,12 @@ export default class Time extends Component {
 
   render() {
     const timezone = tzh.get(this.props.label)
-    const options = { weekday: 'short', day: 'numeric' };
-    const date = new Date(this.state.timestamp)
-    const minuteOffset = timezone.offset * 60
-    date.setHours(date.getUTCHours() + (minuteOffset / 60))
-    date.setMinutes(date.getUTCMinutes() + (minuteOffset % 60))
 
-    const hours = pad(date.getHours())
-    const minutes = pad(date.getMinutes())
-    const day = date.toLocaleDateString(window.navigator.language, options)
+    const options = { weekday: 'short', day: 'numeric' };
+    const date = DateTime.local().setZone(timezone.label)
+    const hours = pad(date.hour)
+    const minutes = pad(date.minute)
+    const day = date.toLocaleString(window.navigator.language, options)
     const dayOrNightClass = `timezone-${getDayOrNightClass(date)}`
 
     return (
