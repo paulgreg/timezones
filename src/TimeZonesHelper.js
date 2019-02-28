@@ -1,13 +1,10 @@
 import timezones from 'timezones.json'
+const etc = 'Etc'
 
 function flatten(arr) {
   return arr.reduce(function (flat, toFlatten) {
     return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
   }, []);
-}
-
-function sortTimezone (a, b) {
-  return a.label <  b.label ? -1 : (a.label > b.label) ? 1 : 0
 }
 
 function getLabelIdx (array, label) {
@@ -19,7 +16,7 @@ function uniqueTimezone (tz, idx, array) {
 }
 
 function filterTzWithCity(tz) {
-  return !tz.label.startsWith('Etc') && tz.label.indexOf('/') !== -1
+  return tz.label.indexOf('/') !== -1
 }
 
 const getCache = {}
@@ -34,7 +31,7 @@ export default class {
           return { label, offset: tz.offset }
         })
       }))
-      getAllCache = allTzs.filter(filterTzWithCity).filter(uniqueTimezone).sort(sortTimezone)
+      getAllCache = allTzs.filter(filterTzWithCity).filter(uniqueTimezone).sort(this.sortTimezone)
     }
     return getAllCache
   }
@@ -49,6 +46,26 @@ export default class {
     }
     return getCache[zoneToLookup]
   }
+
+  sortTimezone (a, b) {
+    const labelA = a.label.split('/')
+    const labelB = b.label.split('/')
+    const [ continentA, cityA ] = labelA
+    const [ continentB, cityB ] = labelB
+
+    const continentAIsEtc = continentA === etc
+    const continentBIsEtc = continentB === etc
+
+    if (continentAIsEtc && continentBIsEtc) {
+      return b.offset - a.offset
+    } else if (continentA === continentB) {
+      return cityA < cityB ? -1 : (cityA > cityB) ? 1 : 0
+    } else if (continentAIsEtc || continentBIsEtc) {
+      return continentAIsEtc ? 1 : -1
+    }
+    return continentA < continentB ? -1 : (continentA > continentB) ? 1 : 0
+  }
+
 
   formatOffset(nb) {
     return `(${nb >= 0 ? '+' : ''}${nb}h)`
