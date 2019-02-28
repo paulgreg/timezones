@@ -30,7 +30,6 @@ export default class AddTimeZone extends Component {
   }
 
   render() {
-console.log('render', this.state)
     return (
       <div className="add-timezone">
         <select
