@@ -38,10 +38,13 @@ export default class Time extends Component {
   }
 
   render() {
-    const timezone = tzh.get(this.props.label)
+    const { label } = this.props
+    const { timestamp } = this.state
+
+    const timezone = tzh.get(label)
 
     const options = { weekday: 'short', day: 'numeric' };
-    const date = DateTime.local().setZone(timezone.label)
+    const date = DateTime.fromMillis(timestamp).setZone(timezone.label)
     const hours = pad(date.hour)
     const minutes = pad(date.minute)
     const day = date.toLocaleString(window.navigator.language, options)
