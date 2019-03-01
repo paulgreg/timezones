@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './AddTimeZone.css';
-import TimeZonesHelper from './TimeZonesHelper'
-
-const tzh = new TimeZonesHelper()
+import { getTimeZones, filterTimeZones, groupTimeZones, formatOffset, getCity, getCounty } from './TimeZonesHelper'
 
 function buildState(excludedLabels) {
-  const tzs = tzh.filterTimezones(tzh.getAll(), excludedLabels)
-  const timezoneGroups = tzh.groupTimezones(tzs)
+  const tzs = filterTimeZones(getTimeZones(), excludedLabels)
+  const timezoneGroups = groupTimeZones(tzs)
   return { timezoneGroups, selectValue: tzs[0].label }
+}
+
+function displayCounty (label) {
+  const county = getCounty(label)
+  return county ? `(${county})` : ''
 }
 
 export default class AddTimeZone extends Component {
@@ -38,7 +41,7 @@ export default class AddTimeZone extends Component {
           {Object.keys(this.state.timezoneGroups).map(group =>
             <optgroup key={group} label={group}>
             {this.state.timezoneGroups[group].map(tz =>
-              <option key={tz.label} value={tz.label}>{tzh.getCity(tz.label)} {tzh.formatOffset(tz.offset)}</option>
+              <option key={tz.label} value={tz.label}>{getCity(tz.label)} {displayCounty(tz.label)} {formatOffset(tz.offset)}</option>
             )}
             </optgroup>
           )}

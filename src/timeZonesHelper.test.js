@@ -1,11 +1,8 @@
+import { getTimeZone, getTimeZones, sortTimeZone, getCity, getCounty, getContinent } from './TimeZonesHelper'
 
-import TimeZonesHelper from './TimeZonesHelper'
-
-const tzh = new TimeZonesHelper()
-
-describe('get', () => {
-    it('should return zone for Europe/Paris', () => {
-        const tz = tzh.get('Europe/Paris')
+describe('getTimeZone', () => {
+    it('Europe/Paris', () => {
+        const tz = getTimeZone('Europe/Paris')
         expect(tz).not.toEqual({})
         expect(tz.value).toEqual("Romance Standard Time")
         expect(tz.abbr).toEqual("RDT")
@@ -14,31 +11,62 @@ describe('get', () => {
     })
 })
 
-describe('sortTimezone', () => {
-    it('sortTimezone should sort by continent', () => {
-        expect(tzh.sortTimezone({label: 'A/a'}, {label:'A/a'})).toEqual(0)
-        expect(tzh.sortTimezone({label: 'A/a'}, {label:'B/b'})).toEqual(-1)
-        expect(tzh.sortTimezone({label: 'B/b'}, {label:'A/a'})).toEqual(1)
-    })
-    it('sortTimezone should sort by city', () => {
-        expect(tzh.sortTimezone({label: 'A/a'}, {label:'A/b'})).toEqual(-1)
-        expect(tzh.sortTimezone({label: 'A/b'}, {label:'A/a'})).toEqual(1)
-    })
-    it('sortTimezone should set Etc at the end', () => {
-        expect(tzh.sortTimezone({label: 'Etc/a'}, {label:'A/b'})).toEqual(1)
-        expect(tzh.sortTimezone({label: 'Etc/b'}, {label:'A/a'})).toEqual(1)
-    })
-    it('sortTimezone should sort Etc by offset', () => {
-        expect(tzh.sortTimezone({label: 'Etc/a', offset: 0}, {label:'Etc/b', offset: 1})).toEqual(1)
-        expect(tzh.sortTimezone({label: 'Etc/b', offset: 1}, {label:'Etc/a', offset: 0})).toEqual(-1)
-    })
-})
-
-describe('getAll', () => {
+describe('getTimeZones', () => {
     it('should return all zone', () => {
-        const tzs = tzh.getAll()
+        const tzs = getTimeZones()
         expect(tzs.length).toEqual(429)
         expect(tzs[0].label).toEqual('Africa/Abidjan')
         expect(tzs[0].offset).toEqual(0)
     })
 })
+
+describe('getCity', () => {
+    it('America/La_Paz', () => {
+        expect(getCity('America/La_Paz')).toEqual('La Paz')
+    })
+    it('America/Argentina/Salta', () => {
+        expect(getCity('America/Argentina/Salta')).toEqual('Salta')
+    })
+})
+
+describe('getContinent', () => {
+    it('America/La_Paz', () => {
+        expect(getContinent('America/La_Paz')).toEqual('America')
+    })
+    it('America/Argentina/Salta', () => {
+        expect(getContinent('America/Argentina/Salta')).toEqual('America')
+    })
+})
+
+describe('getCounty', () => {
+    it('America/La_Paz', () => {
+        expect(getCounty('America/La_Paz')).toEqual('')
+    })
+    it('America/Argentina/Salta', () => {
+        expect(getCounty('America/Argentina/Salta')).toEqual('Argentina')
+    })
+})
+
+describe('sortTimeZone', () => {
+    it('sortTimezone should sort by continent', () => {
+        expect(sortTimeZone({label: 'A/a'}, {label:'A/a'})).toEqual(0)
+        expect(sortTimeZone({label: 'A/a'}, {label:'B/b'})).toEqual(-1)
+        expect(sortTimeZone({label: 'B/b'}, {label:'A/a'})).toEqual(1)
+    })
+    it('sortTimezone should sort by city', () => {
+        expect(sortTimeZone({label: 'A/a'}, {label:'A/b'})).toEqual(-1)
+        expect(sortTimeZone({label: 'A/b'}, {label:'A/a'})).toEqual(1)
+    })
+    it('sortTimezone should set Etc at the end', () => {
+        expect(sortTimeZone({label: 'Etc/a'}, {label:'A/b'})).toEqual(1)
+        expect(sortTimeZone({label: 'Etc/b'}, {label:'A/a'})).toEqual(1)
+    })
+    it('sortTimezone should sort Etc by offset', () => {
+        expect(sortTimeZone({label: 'Etc/a', offset: 0}, {label:'Etc/b', offset: 1})).toEqual(1)
+        expect(sortTimeZone({label: 'Etc/b', offset: 1}, {label:'Etc/a', offset: 0})).toEqual(-1)
+    })
+    it('sortTimezone should sort by county', () => {
+        expect(sortTimeZone({label: 'America/Argentina/Rio'}, {label:'America/Bahia'})).toEqual(1)
+    })
+})
+

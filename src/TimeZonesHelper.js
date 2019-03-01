@@ -19,79 +19,83 @@ function filterTzWithCity(tz) {
   return tz.label.indexOf('/') !== -1
 }
 
-const getCache = {}
-let getAllCache = []
+function format(label) {
+  return label.replace('_', ' ')
+}
+export function getContinent (label) {
+  return label.split('/')[0]
+}
 
-export default class {
+export function getCounty(label) {
+  const s = label.split('/')
+  return s.length === 3 ? format(s[1]) : ''
+}
 
-  getAll() {
-    if (!getAllCache.length) {
-      const allTzs = flatten(timezones.map(tz => {
-        return tz.utc.map(label => {
-          return { label, offset: tz.offset }
-        })
-      }))
-      getAllCache = allTzs.filter(filterTzWithCity).filter(uniqueTimezone).sort(this.sortTimezone)
-    }
-    return getAllCache
-  }
+export function getCity(label) {
+  const s = label.split('/')
+  return format(s[s.length-1])
+}
 
-  get(zoneToLookup) {
-    if (!getCache[zoneToLookup]) {
-      const tz = timezones.find(tz => {
-        return tz.utc.find(zone => zone === zoneToLookup)
+const getAllCache = []
+
+export function getTimeZones() {
+  if (!getAllCache.length) {
+    const allTzs = flatten(timezones.map(tz => {
+      return tz.utc.map(label => {
+        return { label, offset: tz.offset }
       })
-      const result = Object.assign({ label: zoneToLookup }, tz)
-      getCache[zoneToLookup] = result
-    }
-    return getCache[zoneToLookup]
+    }))
+    getAllCache.push.apply(getAllCache, allTzs.filter(filterTzWithCity).filter(uniqueTimezone).sort(sortTimeZone))
   }
+  return getAllCache
+}
 
-  sortTimezone (a, b) {
-    const labelA = a.label.split('/')
-    const labelB = b.label.split('/')
-    const [ continentA, cityA ] = labelA
-    const [ continentB, cityB ] = labelB
+const getCache = {}
 
-    const continentAIsEtc = continentA === etc
-    const continentBIsEtc = continentB === etc
-
-    if (continentAIsEtc && continentBIsEtc) {
-      return b.offset - a.offset
-    } else if (continentA === continentB) {
-      return cityA < cityB ? -1 : (cityA > cityB) ? 1 : 0
-    } else if (continentAIsEtc || continentBIsEtc) {
-      return continentAIsEtc ? 1 : -1
-    }
-    return continentA < continentB ? -1 : (continentA > continentB) ? 1 : 0
+export function getTimeZone(zoneToLookup) {
+  if (!getCache[zoneToLookup]) {
+    const tz = timezones.find(tz => {
+      return tz.utc.find(zone => zone === zoneToLookup)
+    })
+    const result = Object.assign({ label: zoneToLookup }, tz)
+    getCache[zoneToLookup] = result
   }
+  return getCache[zoneToLookup]
+}
 
+export function sortTimeZone ({ label: labelA, offset: offsetA }, { label: labelB, offset: offsetB }) {
+  const continentA = getContinent(labelA)
+  const continentB = getContinent(labelB)
+  const cityA = getCity(labelA)
+  const cityB = getCity(labelB)
 
-  formatOffset(nb) {
-    return `(${nb >= 0 ? '+' : ''}${nb}h)`
+  const continentAIsEtc = continentA === etc
+  const continentBIsEtc = continentB === etc
+
+  if (continentAIsEtc && continentBIsEtc) {
+    return offsetB - offsetA
+  } else if (continentA === continentB) {
+    return cityA < cityB ? -1 : (cityA > cityB) ? 1 : 0
+  } else if (continentAIsEtc || continentBIsEtc) {
+    return continentAIsEtc ? 1 : -1
   }
+  return continentA < continentB ? -1 : (continentA > continentB) ? 1 : 0
+}
 
-  filterTimezones (timezones, excludedLabels) {
-    return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
-  }
+export function formatOffset (nb) {
+  return `(${nb >= 0 ? '+' : ''}${nb}h)`
+}
 
-  getContinent (label) {
-    return label.split('/')[0]
-  }
+export function filterTimeZones (timezones, excludedLabels) {
+  return timezones.filter(tz => excludedLabels.indexOf(tz.label) === -1)
+}
 
-  getCity(label) {
-    const s = label.split('/')
-    return s[s.length-1].replace('_', ' ')
-  }
-
-  groupTimezones (timezones) {
-    return timezones.reduce((acc, value) => {
-      const continent = this.getContinent(value.label)
-      if (!acc[continent]) acc[continent] = []
-      acc[continent].push(value)
-      return acc
-    }, {})
-  }
-
+export function groupTimeZones (timezones) {
+  return timezones.reduce((acc, value) => {
+    const continent = getContinent(value.label)
+    if (!acc[continent]) acc[continent] = []
+    acc[continent].push(value)
+    return acc
+  }, {})
 }
 

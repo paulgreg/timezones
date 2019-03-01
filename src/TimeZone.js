@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import './TimeZone.css';
 import { registerTick, unregisterTick } from './Tick'
 import { DateTime } from 'luxon'
-
-import TimeZonesHelper from './TimeZonesHelper'
-const tzh = new TimeZonesHelper()
+import { getTimeZone, formatOffset, getCounty, getCity, getContinent } from './TimeZonesHelper'
 
 function pad(nb) {
     return nb < 10 ? '0' + nb : '' + nb
@@ -41,7 +39,7 @@ export default class Time extends Component {
     const { label } = this.props
     const { timestamp } = this.state
 
-    const timezone = tzh.get(label)
+    const timezone = getTimeZone(label)
 
     const options = { weekday: 'short', day: 'numeric' };
     const date = DateTime.fromMillis(timestamp).setZone(timezone.label)
@@ -49,10 +47,19 @@ export default class Time extends Component {
     const minutes = pad(date.minute)
     const day = date.toLocaleString(window.navigator.language, options)
     const dayOrNightClass = `timezone-${getDayOrNightClass(date)}`
+    const county = getCounty(label)
 
     return (
       <div className="timezone">
-        <span className="timezone-label">{tzh.getCity(timezone.label)} <small>{tzh.getContinent(timezone.label)}</small> <small>{tzh.formatOffset(timezone.offset)}</small></span>
+        <span className="timezone-label">
+          {getCity(timezone.label)}&nbsp;
+          <small>{formatOffset(timezone.offset)}</small>&nbsp;
+          {
+            county
+              ? (<small>{county}</small>)
+              : <small>{getContinent(timezone.label)}</small>
+          }
+        </span>
         <span className={dayOrNightClass}></span>
         <span className="timezone-time">{hours}:{minutes}</span>
         <span className="timezone-date">({day})</span>
