@@ -1,6 +1,14 @@
 # timezones
 
-A simple React project to display times in different time zones.
+A simple React Progressive Web App (PWA) to display times in different time zones.
+
+## Build the PWA
+
+`npm run build`
+
+## Self-hosting the PWA
+
+You can simply checkout the branch `gh-pages` (already built) or build the application (see above) then copy the `build` folder on your server.
 
 ## Resources
 
