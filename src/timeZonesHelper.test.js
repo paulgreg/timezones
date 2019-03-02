@@ -27,6 +27,9 @@ describe('getCity', () => {
     it('America/Argentina/Salta', () => {
         expect(getCity('America/Argentina/Salta')).toEqual('Salta')
     })
+    it('Europe/Isle_of_Man', () => {
+        expect(getCity('Europe/Isle_of_Man')).toEqual('Isle of Man')
+    })
 })
 
 describe('getContinent', () => {

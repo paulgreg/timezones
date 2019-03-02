@@ -20,7 +20,7 @@ function filterTzWithCity(tz) {
 }
 
 function format(label) {
-  return label.replace('_', ' ')
+  return label.replace(/_/g, ' ')
 }
 export function getContinent (label) {
   return label.split('/')[0]
