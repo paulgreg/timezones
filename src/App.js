@@ -8,12 +8,12 @@ class App extends Component {
 
   constructor(props) {
     super(props)
-    var rawLabels = (window.localStorage && window.localStorage.labels) || 'Europe/Paris,America/New_York'
+    var rawLabels = (window.localStorage && window.localStorage.timezone_labels) || 'Europe/Paris,America/New_York'
     this.state = { labels: rawLabels.split(',')}
   }
 
   update (labels) {
-    localStorage.labels = labels.join(',')
+    localStorage.timezone_labels = labels.join(',')
     this.setState({ labels })
     this._addtimezone.exclude(labels)
   }
