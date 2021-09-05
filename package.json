@@ -7,7 +7,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-scripts": "^2.1.8",
-    "timezones.json": "^1.5.2"
+    "timezones.json": "^1.5.3"
   },
   "homepage": "/timezones",
   "scripts": {
