@@ -1,7 +1,27 @@
-.add-timezone { border-top: 1px solid lightgrey; margin-top: 5em; padding: 1em; }
+.add-timezone {
+  display: flex;
+  margin: 2em 0 1em 0;
+  padding: 1em;
+}
 
-.add-timezone select,
-.add-timezone button { font-size: 18px; background-color: aliceBlue; color: darkblue; border: 1px solid darkblue; border-radius: 5px; }
+.add-timezone-select-container,
+.add-timezone-button {
+  font-size: 18px;
+  border: 1px solid darkblue;
+  border-radius: 5px;
+}
 
-.add-timezone select { max-width: 250px; }
-.add-timezone button { margin-left: .5em; }
+.add-timezone-select-container {
+  flex-grow: 2;
+}
+
+.add-timezone-select-container .add-timezone-select__single-value {
+  color: darkblue;
+
+}
+
+
+.add-timezone-button {
+  background-color: aliceBlue;
+  margin-left: .5em;
+}
