@@ -1,31 +1,28 @@
 const subscribers = {}
 let timeout
 
-function registerTick (l, fn) {
-  subscribers[l] = fn
+const registerTick = (key, updateFn) => {
+  subscribers[key] = updateFn
 }
 
-function unregisterTick (l) {
-  delete subscribers[l]
+const unregisterTick = (key) => {
+  delete subscribers[key]
 }
 
-function getMsUntilNextMinute (date) {
+const getMsUntilNextMinute = (date) => {
   const msUntilNextSecond = 1000 - date.getMilliseconds()
   const secondUntilNextMinute = 60 - date.getSeconds()
   return msUntilNextSecond + secondUntilNextMinute * 1000
 }
 
-function start () {
+const start = () => {
   stop()
   tick()
-  timeout = setTimeout(tick, getMsUntilNextMinute(new Date()))
 }
 
-function stop() {
-  clearTimeout(timeout)
-}
+const stop = () => clearTimeout(timeout)
 
-function tick () {
+const tick = () => {
   const date = new Date()
   const timestamp = +date
   for (var key in subscribers) {
@@ -34,10 +31,9 @@ function tick () {
   timeout = setTimeout(tick, getMsUntilNextMinute(date))
 }
 
-function handleVisibilityChange() {
-  document.hidden ? stop() : start()
-}
-document.addEventListener("visibilitychange", handleVisibilityChange, false);
+const handleVisibilityChange = () => (document.hidden ? stop() : start())
+
+document.addEventListener('visibilitychange', handleVisibilityChange, false)
 
 start()
 

@@ -1,54 +1,45 @@
-import React, { Component } from 'react';
-import './AddTimeZone.css';
-import { getTimeZones, filterTimeZones, groupTimeZones, formatOffset, getCity, getCounty } from './TimeZonesHelper'
+import React, { useState, useCallback, useEffect } from 'react'
+import { getTimeZones, filterTimeZones, groupTimeZones, formatOffset, getCity, getCountry } from './TimeZonesHelper'
+import './AddTimeZone.css'
 
-function buildState(excludedLabels) {
-  const tzs = filterTimeZones(getTimeZones(), excludedLabels)
-  const timezoneGroups = groupTimeZones(tzs)
-  return { timezoneGroups, selectValue: tzs[0].label }
-}
-
-function displayCounty (label) {
-  const county = getCounty(label)
+const displayCounty = (label) => {
+  const county = getCountry(label)
   return county ? `(${county})` : ''
 }
 
-export default class AddTimeZone extends Component {
+const AddTimeZone = ({ excludedTimezones, addFn }) => {
+  const tzs = filterTimeZones(getTimeZones(), excludedTimezones)
+  const timezoneGroups = groupTimeZones(tzs)
+  const firstTimeZone = tzs[0].label
+  const [selectValue, setSelectValue] = useState(firstTimeZone)
 
-  constructor(props) {
-    super(props)
-    this.state = buildState(props.excludedLabels)
-  }
+  useEffect(() => setSelectValue(firstTimeZone), [firstTimeZone])
 
-  exclude (excludedLabels) {
-    this.setState(buildState(excludedLabels))
-  }
+  const addTimezone = useCallback(() => addFn(selectValue), [addFn, selectValue])
 
-  addTimezone() {
-    this.props.addFn(this.state.selectValue)
-  }
+  const handleChange = useCallback(
+    (e) => {
+      setSelectValue(e.target.value)
+    },
+    [setSelectValue]
+  )
 
-  handleChange(e) {
-    this.setState({selectValue: e.target.value});
-  }
-
-  render() {
-    return (
-      <div className="add-timezone">
-        <select
-          value={this.state.selectValue}
-          onChange={this.handleChange.bind(this)}>
-          {Object.keys(this.state.timezoneGroups).map(group =>
-            <optgroup key={group} label={group}>
-            {this.state.timezoneGroups[group].map(tz =>
-              <option key={tz.label} value={tz.label}>{getCity(tz.label)} {displayCounty(tz.label)} {formatOffset(tz.offset)}</option>
-            )}
-            </optgroup>
-          )}
-        </select>
-        <button onClick={this.addTimezone.bind(this)}>Add</button>
-      </div>
-    );
-  }
+  return (
+    <div className="add-timezone">
+      <select value={selectValue} onChange={handleChange}>
+        {Object.keys(timezoneGroups).map((group) => (
+          <optgroup key={group} label={group}>
+            {timezoneGroups[group].map((tz) => (
+              <option key={tz.label} value={tz.label}>
+                {getCity(tz.label)} {displayCounty(tz.label)} {formatOffset(tz.offset)}
+              </option>
+            ))}
+          </optgroup>
+        ))}
+      </select>
+      <button onClick={() => addTimezone()}>Add</button>
+    </div>
+  )
 }
 
+export default AddTimeZone

@@ -1,54 +1,50 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback, useState } from 'react'
 import TimeZone from './TimeZone'
 import AddTimeZone from './AddTimeZone'
+import logo from './logo.svg'
+import './App.css'
 
-class App extends Component {
+const LOCAL_STORAGE_KEY = 'timezone_labels'
+const DEFAULT_TIMEZONES = 'Europe/Paris,America/New_York'
 
-  constructor(props) {
-    super(props)
-    var rawLabels = (window.localStorage && window.localStorage.timezone_labels) || 'Europe/Paris,America/New_York'
-    this.state = { labels: rawLabels.split(',')}
-  }
+const initialLabels = window.localStorage.getItem(LOCAL_STORAGE_KEY) || DEFAULT_TIMEZONES
 
-  update (labels) {
-    localStorage.timezone_labels = labels.join(',')
-    this.setState({ labels })
-    this._addtimezone.exclude(labels)
-  }
+const App = () => {
+  const [timezones, setTimezones] = useState(initialLabels.split(','))
 
-  addTimeZone(label) {
-    const labels = this.state.labels.concat(label)
-    this.update(labels)
-  }
+  const update = useCallback(
+    (labels) => {
+      localStorage.setItem(LOCAL_STORAGE_KEY, labels.join(','))
+      setTimezones(labels)
+    },
+    [setTimezones]
+  )
 
-  removeTimeZone(labelToRemove) {
-    const labels = this.state.labels.filter(l => l !== labelToRemove)
-    this.update(labels)
-  }
+  const addTimeZone = useCallback((timezoneToAdd) => update(timezones.concat(timezoneToAdd)), [timezones, update])
 
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">TimeZones</h1>
-        </header>
-        {
-          this.state.labels.map((label) =>
-            <div className="App-time" key={label}>
-              <TimeZone label={label} removeFn={this.removeTimeZone.bind(this) }/>
-            </div>
-          )
-        }
-        <div className="App-timezone">
-          <AddTimeZone addFn={this.addTimeZone.bind(this)} excludedLabels={this.state.labels} ref={r => { this._addtimezone = r }} />
+  const removeTimeZone = useCallback(
+    (timezoneToRemove) => update(timezones.filter((l) => l !== timezoneToRemove)),
+    [timezones, update]
+  )
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <h1 className="App-title">TimeZones</h1>
+      </header>
+      {timezones.map((timezoneLabel) => (
+        <div className="App-time" key={timezoneLabel}>
+          <TimeZone timezoneLabel={timezoneLabel} removeFn={removeTimeZone} />
         </div>
-        <a href="https://github.com/paulgreg/timezones/blob/master/README.md">readme</a> - <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
+      ))}
+      <div className="App-timezone">
+        <AddTimeZone addFn={addTimeZone} excludedTimezones={timezones} />
       </div>
-    );
-  }
+      <a href="https://github.com/paulgreg/timezones/blob/master/README.md">readme</a> -{' '}
+      <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
+    </div>
+  )
 }
 
-export default App;
+export default App
