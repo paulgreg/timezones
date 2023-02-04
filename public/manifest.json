@@ -4,22 +4,22 @@
   "icons": [
     {
       "src": "time-64.png",
-      "sizes": "48x48 64x64",
+      "sizes": "64x64",
       "type": "image/png"
     },
     {
       "src": "time-128.png",
-      "sizes": "72x72 96x96 128x128",
+      "sizes": "128x128",
       "type": "image/png"
     },
     {
       "src": "time-512.png",
-      "sizes": "256x256 512x512",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ],
   "start_url": "./",
   "display": "minimal-ui",
-  "theme_color": "#fff",
-  "background_color": "#fff"
+  "theme_color": "#00008b",
+  "background_color": "#00008b"
 }
