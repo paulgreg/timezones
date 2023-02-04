@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "deploy": "npm i && PUBLIC_URL=\"https://paulgreg.me/timezones\" ./to_ghpages",
+    "deploy": "npm i && ./node_modules/.bin/browserslist --update-db && PUBLIC_URL=\"https://paulgreg.me/timezones\" ./to_ghpages",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
