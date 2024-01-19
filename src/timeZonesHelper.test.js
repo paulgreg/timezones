@@ -14,7 +14,7 @@ describe('getTimeZone', () => {
 describe('getTimeZones', () => {
   it('should return all zone', () => {
     const tzs = getTimeZones()
-    expect(tzs.length).toEqual(430)
+    expect(tzs.length).toEqual(435)
     expect(tzs[0].label).toEqual('Africa/Abidjan')
     expect(tzs[0].offset).toEqual(0)
   })
