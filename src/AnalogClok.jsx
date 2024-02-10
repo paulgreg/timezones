@@ -1,16 +1,30 @@
-import { useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const AnalogClock = ({ size = 200 }) => {
   const z = size / 2
+  const transformOrigin = `${z} ${z}`
 
-  const date = new Date()
-  const hourAngle = (360 * date.getHours()) / 12 + date.getMinutes() / 2
-  const minuteAngle = (360 * date.getMinutes()) / 60
-  const secondAngle = (360 * date.getSeconds()) / 60
-
-  const shifter = useCallback((val) => [val, z, z].join(' '), [z])
+  const [hourAngle, setHourAngle] = useState(0)
+  const [minuteAngle, setMinuteangle] = useState(0)
+  const [secondAngle, setSecondangle] = useState(0)
 
   const separations = new Array(12).fill(0)
+
+  const updateTime = useCallback(() => {
+    const date = new Date()
+    setHourAngle((360 * date.getHours()) / 12 + date.getMinutes() / 2)
+    setMinuteangle((360 * date.getMinutes()) / 60)
+    setSecondangle((360 * date.getSeconds()) / 60)
+    if (document.visibilityState === 'visible') {
+      setTimeout(updateTime, 1000 - date.getMilliseconds())
+    }
+  }, [setHourAngle, setMinuteangle, setSecondangle])
+
+  useEffect(() => {
+    updateTime()
+    document.addEventListener('visibilitychange', updateTime)
+    return () => document.removeEventListener('visibilitychange', updateTime)
+  }, [])
 
   return (
     <svg width={size} height={size}>
@@ -24,39 +38,33 @@ const AnalogClock = ({ size = 200 }) => {
         ></circle>
       </g>
       <g>
-        <line x1={z} y1={z} x2={z} y2={z * 0.55} style={{ strokeWidth: '3px', stroke: '#fffbf9' }} id="hourhand">
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            dur="43200s"
-            repeatCount="indefinite"
-            from={shifter(hourAngle)}
-            to={shifter(hourAngle + 360)}
-          />
-        </line>
-        <line x1={z} y1={z} x2={z} y2={z * 0.4} style={{ strokeWidth: '4px', stroke: '#fdfdfd' }} id="minutehand">
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            dur="3600s"
-            repeatCount="indefinite"
-            from={shifter(minuteAngle)}
-            to={shifter(minuteAngle + 360)}
-          />
-        </line>
-        <line x1={z} y1={z} x2={z} y2={z * 0.3} style={{ strokeWidth: '2px', stroke: '#C1EFED' }} id="secondhand">
-          <animateTransform
-            attributeName="transform"
-            attributeType="XML"
-            type="rotate"
-            dur="60s"
-            repeatCount="indefinite"
-            from={shifter(secondAngle)}
-            to={shifter(secondAngle + 360)}
-          />
-        </line>
+        <line
+          x1={z}
+          y1={z}
+          x2={z}
+          y2={z * 0.55}
+          style={{ strokeWidth: '3px', stroke: '#fffbf9' }}
+          transform={`rotate(${hourAngle})`}
+          transform-origin={transformOrigin}
+        />
+        <line
+          x1={z}
+          y1={z}
+          x2={z}
+          y2={z * 0.4}
+          style={{ strokeWidth: '4px', stroke: '#fdfdfd' }}
+          transform={`rotate(${minuteAngle})`}
+          transform-origin={transformOrigin}
+        />
+        <line
+          x1={z}
+          y1={z}
+          x2={z}
+          y2={z * 0.3}
+          style={{ strokeWidth: '2px', stroke: '#C1EFED' }}
+          transform={`rotate(${secondAngle})`}
+          transform-origin={transformOrigin}
+        />
       </g>
       <circle
         id="center"
