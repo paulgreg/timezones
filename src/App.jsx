@@ -1,46 +1,23 @@
-import React, { useCallback, useState } from 'react'
-import TimeZone from './TimeZone'
+import React from 'react'
 import AddTimeZone from './AddTimeZone'
-import logo from './logo.svg'
+import { TimeZoneProvider } from './TimeZoneContext'
+import AnalogClock from './AnalogClok'
+import TimeZones from './TimeZones'
 import './App.css'
 
-const LOCAL_STORAGE_KEY = 'timezone_labels'
-const DEFAULT_TIMEZONES = 'Europe/Paris,America/New_York'
-
-const initialLabels = window.localStorage.getItem(LOCAL_STORAGE_KEY) || DEFAULT_TIMEZONES
-
 const App = () => {
-  const [timezones, setTimezones] = useState(initialLabels.split(','))
-
-  const update = useCallback(
-    (labels) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY, labels.join(','))
-      setTimezones(labels)
-    },
-    [setTimezones]
-  )
-
-  const addTimeZone = useCallback((timezoneToAdd) => update(timezones.concat(timezoneToAdd)), [timezones, update])
-
-  const removeTimeZone = useCallback(
-    (timezoneToRemove) => update(timezones.filter((l) => l !== timezoneToRemove)),
-    [timezones, update]
-  )
-
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <AnalogClock size={140} />
         <h1 className="App-title">TimeZones</h1>
       </header>
-      {timezones.map((timezoneLabel) => (
-        <div className="App-time" key={timezoneLabel}>
-          <TimeZone timezoneLabel={timezoneLabel} removeFn={removeTimeZone} />
+      <TimeZoneProvider>
+        <TimeZones />
+        <div className="App-timezone">
+          <AddTimeZone />
         </div>
-      ))}
-      <div className="App-timezone">
-        <AddTimeZone addFn={addTimeZone} excludedTimezones={timezones} />
-      </div>
+      </TimeZoneProvider>
       <a href="https://github.com/paulgreg/timezones/blob/master/README.md">readme</a> -{' '}
       <a href="https://github.com/paulgreg/timezones">github</a> - <a href="https://paulgreg.me/">author</a>
     </div>

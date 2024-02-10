@@ -14,6 +14,7 @@ You can simply checkout the branch `gh-pages` (already built) or build the appli
 
 That project use [timezones.json](https://github.com/dmfilipenko/timezones.json) from Dmytro Filipenko.
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
+Analog clock is inspired by that [https://codepen.io/mohebifar/pen/KwdeMz](mohebifar’s codepen example).
 
 Icons are from :
 
