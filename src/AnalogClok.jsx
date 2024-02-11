@@ -1,4 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
+import { registerTick, unregisterTick } from './Tick'
+
+const clockLabel = 'clock'
 
 const AnalogClock = ({ size = 200 }) => {
   const z = size / 2
@@ -10,21 +13,20 @@ const AnalogClock = ({ size = 200 }) => {
 
   const separations = new Array(12).fill(0)
 
-  const updateTime = useCallback(() => {
-    const date = new Date()
-    setHourAngle((360 * date.getHours()) / 12 + date.getMinutes() / 2)
-    setMinuteangle((360 * date.getMinutes()) / 60)
-    setSecondangle((360 * date.getSeconds()) / 60)
-    if (document.visibilityState === 'visible') {
-      setTimeout(updateTime, 1000 - date.getMilliseconds())
-    }
-  }, [setHourAngle, setMinuteangle, setSecondangle])
+  const updateTime = useCallback(
+    (timestamp) => {
+      const date = new Date(timestamp)
+      setHourAngle((360 * date.getHours()) / 12 + date.getMinutes() / 2)
+      setMinuteangle((360 * date.getMinutes()) / 60)
+      setSecondangle((360 * date.getSeconds()) / 60)
+    },
+    [setHourAngle, setMinuteangle, setSecondangle]
+  )
 
   useEffect(() => {
-    updateTime()
-    document.addEventListener('visibilitychange', updateTime)
-    return () => document.removeEventListener('visibilitychange', updateTime)
-  }, [])
+    registerTick(clockLabel, updateTime)
+    return () => unregisterTick(clockLabel)
+  }, [registerTick, unregisterTick, updateTime])
 
   return (
     <svg width={size} height={size}>

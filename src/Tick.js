@@ -9,11 +9,7 @@ const unregisterTick = (key) => {
   delete subscribers[key]
 }
 
-const getMsUntilNextMinute = (date) => {
-  const msUntilNextSecond = 1000 - date.getMilliseconds()
-  const secondUntilNextMinute = 60 - date.getSeconds()
-  return msUntilNextSecond + secondUntilNextMinute * 1000
-}
+const getMsUntilNextSecond = (date) => 1000 - date.getMilliseconds()
 
 const start = () => {
   stop()
@@ -28,7 +24,7 @@ const tick = () => {
   for (var key in subscribers) {
     subscribers[key](timestamp)
   }
-  timeout = setTimeout(tick, getMsUntilNextMinute(date))
+  timeout = setTimeout(tick, getMsUntilNextSecond(date))
 }
 
 const handleVisibilityChange = () => (document.hidden ? stop() : start())
