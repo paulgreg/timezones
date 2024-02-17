@@ -1,0 +1,3 @@
+svg.transition line {
+  transition: transform 500ms ease-in-out;
+}

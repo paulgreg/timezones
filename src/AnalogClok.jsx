@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { registerTick, unregisterTick } from './Tick'
+import './AnalogClock.css'
 
 const clockLabel = 'clock'
 
@@ -8,19 +9,21 @@ const AnalogClock = ({ size = 200 }) => {
   const transformOrigin = `${z} ${z}`
 
   const [hourAngle, setHourAngle] = useState(0)
-  const [minuteAngle, setMinuteangle] = useState(0)
-  const [secondAngle, setSecondangle] = useState(0)
+  const [minuteAngle, setMinuteAngle] = useState(0)
+  const [secondAngle, setSecondAngle] = useState(0)
+  const [state, setState] = useState(0) // State is used to remove transition after hands initialization
 
   const separations = new Array(12).fill(0)
 
   const updateTime = useCallback(
     (timestamp) => {
+      if (state < 2) setState((state) => state + 1)
       const date = new Date(timestamp)
       setHourAngle((360 * date.getHours()) / 12 + date.getMinutes() / 2)
-      setMinuteangle((360 * date.getMinutes()) / 60)
-      setSecondangle((360 * date.getSeconds()) / 60)
+      setMinuteAngle((360 * date.getMinutes()) / 60)
+      setSecondAngle((360 * date.getSeconds()) / 60)
     },
-    [setHourAngle, setMinuteangle, setSecondangle]
+    [state, setHourAngle, setMinuteAngle, setSecondAngle]
   )
 
   useEffect(() => {
@@ -28,8 +31,10 @@ const AnalogClock = ({ size = 200 }) => {
     return () => unregisterTick(clockLabel)
   }, [registerTick, unregisterTick, updateTime])
 
+  useEffect(() => {}, [])
+
   return (
-    <svg width={size} height={size}>
+    <svg width={size} height={size} className={state < 2 ? 'transition' : ''}>
       <g>
         <circle
           id="circle"
