@@ -4,8 +4,8 @@
   "private": false,
   "dependencies": {
     "luxon": "^3.4.4",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-select": "^5.8.0",
     "timezones.json": "^1.7.1"
   },
@@ -18,9 +18,9 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.1.1",
-    "vite-plugin-pwa": "^0.18.0",
-    "vitest": "^1.2.2"
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.1",
+    "vite-plugin-pwa": "^0.20.0",
+    "vitest": "^1.6.0"
   }
 }
