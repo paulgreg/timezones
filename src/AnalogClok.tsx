@@ -1,10 +1,14 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { registerTick, unregisterTick } from './Tick'
 import './AnalogClock.css'
 
 const clockLabel = 'clock'
 
-const AnalogClock = ({ size = 200 }) => {
+type AnalogClockType = {
+  size: number
+}
+
+const AnalogClock: React.FC<AnalogClockType> = ({ size = 200 }) => {
   const z = size / 2
   const transformOrigin = `${z} ${z}`
 
@@ -16,7 +20,7 @@ const AnalogClock = ({ size = 200 }) => {
   const separations = new Array(12).fill(0)
 
   const updateTime = useCallback(
-    (timestamp) => {
+    (timestamp: number) => {
       if (state < 2) setState((state) => state + 1)
       const date = new Date(timestamp)
       setHourAngle((360 * date.getHours()) / 12 + date.getMinutes() / 2)
@@ -80,7 +84,7 @@ const AnalogClock = ({ size = 200 }) => {
         r="3"
         style={{ fill: 'royalblue', stroke: 'lightblue', strokeWidth: '2px' }}
       ></circle>
-      {separations.map((v, idx) => (
+      {separations.map((_v, idx) => (
         <line
           key={`hands-${idx}`}
           x1={z}

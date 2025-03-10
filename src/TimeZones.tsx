@@ -1,9 +1,9 @@
-import { useContext } from 'react'
-import { TimeZoneContext } from './TimeZoneContext'
+import React from 'react'
+import { useTimeZoneContext } from './TimeZoneContext'
 import TimeZone from './TimeZone'
 
 const TimeZones = () => {
-  const { timezones, removeTimeZone } = useContext(TimeZoneContext)
+  const { timezones, removeTimeZone } = useTimeZoneContext()
 
   return (
     <>

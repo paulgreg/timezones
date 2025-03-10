@@ -1,21 +1,21 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { registerTick, unregisterTick } from './Tick'
-import { DateTime } from 'luxon'
 import { getTimeZone, formatOffset, getCountry, getCity, getContinent } from './TimeZonesHelper'
+import { DateTime, DateTimeFormatOptions } from 'luxon'
 import './TimeZone.css'
 
-const dateLocaleStringOptions = { weekday: 'short', day: 'numeric' }
+const dateLocaleStringOptions: DateTimeFormatOptions = { weekday: 'short', day: 'numeric' }
 
-const getDay = (date) => date.toLocaleString(window.navigator.language, dateLocaleStringOptions)
+const getDay = (date: DateTime) => date.setLocale(window.navigator.language).toLocaleString(dateLocaleStringOptions)
 
-const getDayOrNightClass = (date) => (date.hour >= 7 && date.hour <= 19 ? 'day' : 'night')
+const getDayOrNightClass = (date: DateTime) => (date.hour >= 7 && date.hour <= 19 ? 'day' : 'night')
 
-const pad = (nb) => (nb < 10 ? '0' + nb : '' + nb)
+const pad = (nb: number) => (nb < 10 ? '0' + nb : '' + nb)
 
-const Time = ({ timezoneLabel, removeFn }) => {
+const Time = ({ timezoneLabel, removeFn }: { timezoneLabel: string; removeFn: (label: string) => void }) => {
   const [timestamp, setTimestamp] = useState(Date.now())
 
-  const updateTimestamp = useCallback((newTimestamp) => setTimestamp(newTimestamp), [setTimestamp])
+  const updateTimestamp = useCallback((newTimestamp: number) => setTimestamp(newTimestamp), [setTimestamp])
 
   useEffect(() => {
     registerTick(timezoneLabel, updateTimestamp)
