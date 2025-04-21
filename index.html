@@ -18,6 +18,9 @@
   </noscript>
   <div id="root"></div>
   <script type="module" src="/src/index.jsx"></script>
+  <script>
+      if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js')
+  </script>
 </body>
 
 </html>
