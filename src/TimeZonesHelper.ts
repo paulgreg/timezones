@@ -1,14 +1,15 @@
 import timezones from 'timezones.json'
 import { TimeZoneType, TimeZonesType } from './TimeZonesTypes'
+
 const etc = 'Etc'
 
 const getLabelIdx = (array: TimeZonesType, label: string) => array.findIndex((tz) => tz.label === label)
 
 const uniqueTimezone = (tz: TimeZoneType, idx: number, array: TimeZonesType) => getLabelIdx(array, tz.label) === idx
 
-const filterTzWithCity = (tz: TimeZoneType) => tz.label.indexOf('/') !== -1
+const filterTzWithCity = (tz: TimeZoneType) => tz.label.includes('/')
 
-const format = (label: string) => label.replace(/_/g, ' ')
+const format = (label: string) => label.replaceAll('_', ' ')
 
 export const getContinent = (label: string, avoidEtc = false) => {
   const continent = label.split('/')[0]
@@ -24,7 +25,8 @@ export const getCountry = (label: string) => {
 
 export const getCity = (label: string) => {
   const s = splitLabel(label)
-  const city = s[s.length - 1]
+  const city = s.at(-1)
+  if (!city) throw new Error('missing city')
   return format(city)
 }
 
@@ -88,8 +90,8 @@ export const sortTimeZone = (tz1: TimeZoneType, tz2: TimeZoneType) => {
 
 export const formatOffset = (nb: number) => `(${nb >= 0 ? '+' : ''}${nb}h)`
 
-export const filterTimeZones = (timezones: TimeZonesType, excludedLabels: Array<String>) =>
-  timezones.filter((tz) => excludedLabels.indexOf(tz.label) === -1)
+export const filterTimeZones = (timezones: TimeZonesType, excludedLabels: Array<string>) =>
+  timezones.filter((tz) => !excludedLabels.includes(tz.label))
 
 export const groupTimeZones = (timezones: TimeZonesType) =>
   timezones.reduce((acc: Record<string, TimeZonesType>, value) => {

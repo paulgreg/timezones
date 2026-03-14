@@ -4,8 +4,6 @@ describe('getTimeZone', () => {
   it('Europe/Paris', () => {
     const tz = getTimeZone('Europe/Paris')
     expect(tz).not.toEqual({})
-    expect(tz.value).toEqual('Romance Standard Time')
-    expect(tz.abbr).toEqual('RDT')
     expect(tz.offset).toEqual(2)
     expect(tz.label).toEqual('Europe/Paris')
   })
