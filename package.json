@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
-    "luxon": "^3.6.1",
+    "luxon": "^3.7.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-select": "^5.10.1",
-    "timezones.json": "^1.7.1",
+    "timezones.json": "^1.7.2",
     "typescript": "^5.8.3"
   },
   "scripts": {
@@ -19,7 +19,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@types/luxon": "^3.6.2",
+    "@types/luxon": "^3.7.1",
     "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react": "^4.4.1",
     "vite": "^6.3.2",
