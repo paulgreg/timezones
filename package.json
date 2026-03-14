@@ -4,9 +4,9 @@
   "private": false,
   "dependencies": {
     "luxon": "^3.7.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-select": "^5.10.1",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-select": "^5.10.2",
     "timezones.json": "^1.7.2",
     "typescript": "^5.8.3"
   },
