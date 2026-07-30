@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
-    "luxon": "^3.7.2",
+    "@js-temporal/polyfill": "^0.5.1",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "react-select": "^5.10.2",
@@ -19,7 +19,6 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@types/luxon": "^3.7.2",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
     "babel-plugin-react-compiler": "^1.0.0",

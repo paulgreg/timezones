@@ -1,14 +1,14 @@
 import React, { useState, useCallback, useEffect } from 'react'
 import { registerTick, unregisterTick } from './Tick'
 import { getTimeZone, formatOffset, getCountry, getCity, getContinent } from './TimeZonesHelper'
-import { DateTime, DateTimeFormatOptions } from 'luxon'
+import { Temporal } from '@js-temporal/polyfill'
 import './TimeZone.css'
 
-const dateLocaleStringOptions: DateTimeFormatOptions = { weekday: 'short', day: 'numeric' }
+const dateLocaleStringOptions: Intl.DateTimeFormatOptions = { weekday: 'short', day: 'numeric' }
 
-const getDay = (date: DateTime) => date.setLocale(window.navigator.language).toLocaleString(dateLocaleStringOptions)
+const getDay = (date: Temporal.ZonedDateTime) => date.toLocaleString(window.navigator.language, dateLocaleStringOptions)
 
-const getDayOrNightClass = (date: DateTime) => (date.hour >= 7 && date.hour <= 19 ? 'day' : 'night')
+const getDayOrNightClass = (date: Temporal.ZonedDateTime) => (date.hour >= 7 && date.hour <= 19 ? 'day' : 'night')
 
 const pad = (nb: number) => (nb < 10 ? '0' + nb : '' + nb)
 
@@ -25,7 +25,7 @@ const Time = ({ timezoneLabel, removeFn }: { timezoneLabel: string; removeFn: (l
   const remove = useCallback(() => removeFn(timezoneLabel), [removeFn, timezoneLabel])
 
   const timezone = getTimeZone(timezoneLabel)
-  const date = DateTime.fromMillis(timestamp).setZone(timezone.label)
+  const date = Temporal.Instant.fromEpochMilliseconds(timestamp).toZonedDateTimeISO(timezone.label)
   const county = getCountry(timezoneLabel)
 
   return (
