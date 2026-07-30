@@ -2,6 +2,7 @@
   "name": "timezones",
   "version": "0.1.0",
   "private": false,
+  "type": "module",
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
     "react": "^19.2.8",
