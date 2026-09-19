@@ -5,8 +5,8 @@
   "type": "module",
   "dependencies": {
     "@js-temporal/polyfill": "^0.5.1",
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "react-select": "^5.10.2",
     "typescript": "^7.0.2"
   },
@@ -19,10 +19,10 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@types/react-dom": "^19.2.3",
+    "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.0.1",
     "babel-plugin-react-compiler": "^1.0.0",
-    "vite": "^8.2.0",
-    "vitest": "^4.1.10"
+    "vite": "^8.3.0",
+    "vitest": "^5.0.1"
   }
 }
