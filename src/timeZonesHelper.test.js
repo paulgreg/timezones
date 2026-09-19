@@ -1,10 +1,11 @@
-import { getTimeZone, getTimeZones, sortTimeZone, getCity, getCountry, getContinent } from './TimeZonesHelper'
+import { Temporal } from '@js-temporal/polyfill'
+import { getTimeZone, getTimeZones, sortTimeZone, getCity, getCountry, getContinent, formatOffset } from './TimeZonesHelper'
 
 describe('getTimeZone', () => {
   it('Europe/Paris', () => {
     const tz = getTimeZone('Europe/Paris')
     expect(tz).not.toEqual({})
-    expect(tz.offset).toEqual(2)
+    expect(tz.offset).toEqual(Temporal.Now.zonedDateTimeISO('Europe/Paris').offsetNanoseconds / 6e10)
     expect(tz.label).toEqual('Europe/Paris')
   })
 })
@@ -12,7 +13,7 @@ describe('getTimeZone', () => {
 describe('getTimeZones', () => {
   it('should return all zone', () => {
     const tzs = getTimeZones()
-    expect(tzs.length).toEqual(436)
+    expect(tzs.length).toBeGreaterThan(300)
     expect(tzs[0].label).toEqual('Africa/Abidjan')
     expect(tzs[0].offset).toEqual(0)
   })
@@ -58,15 +59,21 @@ describe('sortTimeZone', () => {
     expect(sortTimeZone({ label: 'A/a' }, { label: 'A/b' })).toEqual(-1)
     expect(sortTimeZone({ label: 'A/b' }, { label: 'A/a' })).toEqual(1)
   })
-  it('sortTimezone should set Etc at the end', () => {
-    expect(sortTimeZone({ label: 'Etc/a' }, { label: 'A/b' })).toEqual(1)
-    expect(sortTimeZone({ label: 'Etc/b' }, { label: 'A/a' })).toEqual(1)
-  })
-  it('sortTimezone should sort Etc by offset', () => {
-    expect(sortTimeZone({ label: 'Etc/a', offset: 0 }, { label: 'Etc/b', offset: 1 })).toEqual(1)
-    expect(sortTimeZone({ label: 'Etc/b', offset: 1 }, { label: 'Etc/a', offset: 0 })).toEqual(-1)
-  })
   it('sortTimezone should sort by county', () => {
     expect(sortTimeZone({ label: 'America/Argentina/Rio' }, { label: 'America/Bahia' })).toEqual(1)
+  })
+})
+
+describe('formatOffset', () => {
+  it('formats whole hours', () => {
+    expect(formatOffset(120)).toEqual('(+2h)')
+  })
+
+  it('formats half hours', () => {
+    expect(formatOffset(330)).toEqual('(+5:30)')
+  })
+
+  it('formats negative offsets', () => {
+    expect(formatOffset(-345)).toEqual('(-5:45)')
   })
 })

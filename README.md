@@ -12,7 +12,6 @@ You can simply checkout the branch `gh-pages` (already built) or build the appli
 
 ## Resources
 
-- That project use [timezones.json](https://github.com/dmfilipenko/timezones.json) from Dmytro Filipenko.
 - Analog clock is heavily inspired by [mohebifar’s](https://twitter.com/mohebifar) [codepen example](https://codepen.io/mohebifar/pen/KwdeMz).
 
 Icons are from :
@@ -22,4 +21,3 @@ Icons are from :
   * [fjstudio](https://www.flaticon.com/authors/fjstudio)  licensed by [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/)
 
 Thanks !
-
